@@ -1,0 +1,16 @@
+.score-container
+{
+    display: flex;
+    gap: 25px;
+}
+
+.player-score-container, .computer-score-container
+{
+    display: flex;
+    gap: 10px;
+}
+
+.player-input
+{
+    min-width: 300px;
+}
