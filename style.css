@@ -1,16 +1,27 @@
-.score-container
+button
+{
+    cursor: pointer;
+}
+
+.rps-container
 {
     display: flex;
+    flex-direction: column;
     gap: 25px;
 }
 
-.player-score-container, .computer-score-container
+.buttons-container
 {
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 
-.player-input
+.choices
 {
-    min-width: 300px;
+    font-size: 40px;
+}
+
+.chosen
+{
+    font-weight: bold;
 }

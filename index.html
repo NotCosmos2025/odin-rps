@@ -5,37 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Odin RPS</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer="true"></script>
+    <script src="script.js" defer=></script>
 </head>
 <body>
-    <div class="rps-container">
-        <div class="score-container">
-            <div class="player-score-container">
-                <p>player score:</p>
-                <p class="player-score">0</p>
+
+    <div class="body-container">
+
+        <div class="menu-container">
+            <button class="reset-btn">reset scores</button>
+            <p class="announce-winner"></p>
+
+        </div>
+
+        <div class="scores-container">
+            <p> <span id="player-score">0</span> - <span id="computer-score">0</span> </p>
+        </div>
+
+        <div class="rps-container">
+            <div class="player-container">
+                <div class="header-container">
+                    <p class="player-dialogue"></p>
+                </div>
+
+                <div class="buttons-container">
+                    <button class="choices player" id="rock">✊</button>
+                    <button class="choices player" id="paper">🖐️</button>
+                    <button class="choices player" id="scissors">✌️</button>
+                </div>
             </div>
 
-            <div class="computer-score-container">
-                <p>computer score: </p>
-                <p class="computer-score">0</p>
+            <div class="player-container">
+                <div class="header-container">
+                    <p class="computer-dialogue"></p>
+                </div>
+                <div class="buttons-container">
+                    <button class="choices computer" id="rock" disabled>✊</button>
+                    <button class="choices computer" id="paper" disabled>🖐️</button>
+                    <button class="choices computer" id="scissors" disabled>✌️</button>
+                </div>
+
             </div>
-
         </div>
 
-        <div class="input-container">
-            <input type="text" class="player-input" placeholder="type 'rock', 'paper' or 'scissors' and press go.">
-            <button class="go-btn" disabled>go</button>
-        </div>
-
-        <div class="game-container">
-
-            <p class="display-dialogue">Welcome to rps! press start when ready.</p>
-            <button class="start-btn">start</button>
-            <p class="display-winner">
-        </div>
-
-        </p>
     </div>
+
     
 </body>
 </html>

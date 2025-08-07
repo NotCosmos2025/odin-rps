@@ -1,146 +1,137 @@
 let playerScore = 0;
 let computerScore = 0;
 
-const startButton = document.querySelector(".start-btn");
-const dialogue =  document.querySelector(".display-dialogue");
-const displayWinner = document.querySelector(".display-winner");
-const playerScoreHTML = document.querySelector(".player-score");
-const computerScoreHTML = document.querySelector(".computer-score");
-const playerInput = document.querySelector(".player-input");
-const goBtn = document.querySelector(".go-btn");
+const playerChoices = document.querySelectorAll(".player");
+const computerChoices = document.querySelectorAll(".computer");
+const playerScoreSpan = document.querySelector("#player-score");
+const computerScoreSpan = document.querySelector("#computer-score");
 
-startButton.addEventListener("click", () =>
+const announceWinner = document.querySelector(".announce-winner");
+const playerDialogue = document.querySelector(".player-dialogue");
+const computerDialogue = document.querySelector(".computer-dialogue");
+
+const resetButton = document.querySelector(".reset-btn");
+
+resetButton.addEventListener("click", () =>
 {
-    startButton.setAttribute("disabled", true);
-    resetScores();
-    goBtn.removeAttribute("disabled");
-});
+    playerScore = 0; computerScore = 0;
+    playerScoreSpan.textContent = 0; computerScoreSpan.textContent = 0;
+})
 
-goBtn.addEventListener("click", () =>
+playerChoices.forEach(button =>
 {
-    let humanChoice = playerInput.value;
-    playRound(humanChoice, getComputerChoice());
-    checkWinner();
+    button.addEventListener("click", (e) =>
+    {
+        clearButtonColors();
+        startRound(e.target.id, getComputerChoice());        
+    })
+})
 
-});
-
-// Computer 
 function getComputerChoice()
 {
-    let randomNumber = parseInt(Math.random() * 100);
-
-    if (randomNumber < 33) return "rock";
-    if (randomNumber < 66) return "paper";
-    else return "scissors";
+    const randomInt = Math.floor(Math.random() * 100)
+    if (randomInt < 33) return "rock";
+    if (randomInt < 66) return "paper";
+    if (randomInt < 99) return "scissors";
 }
 
-//Human
-
-//game logic
-
-function playRound(humanChoice, computerChoice)
+function startRound(playerChoice, computerChoice)
 {
-    //0 - lose, 1 - true, 2 - tie
+    //undefined = draw, true = win, false = lost
     let playerWon;
 
-    console.log(humanChoice + ", " + computerChoice);
-
-    //tie
-    //check win/loss for each human choice
-    if (humanChoice === "rock")
+    if (playerChoice === "rock")
     {
-        if (computerChoice === "scissors") 
-        {
-            playerScore++;
-            playerWon = true;
-        }
-        if (computerChoice === "paper") 
-        {
-            computerScore++;
-            playerWon = false;
-        }
-
+        if (computerChoice === "scissors") playerWon = true;
+        if (computerChoice === "paper") playerWon = false;
     }
 
-    if (humanChoice === "paper")
+    if (playerChoice === "paper")
     {
-        if (computerChoice === "rock") 
-        {
-            playerScore++;
-            playerWon = true;
-        }
-        if (computerChoice === "scissors") 
-        {
-            computerScore++;
-            playerWon = false;
-        }
+        if (computerChoice === "rock") playerWon = true;
+        if (computerChoice === "scissors") playerWon = false;
     }
 
-    if (humanChoice === "scissors")
+    if (playerChoice === "scissors")
     {
-        if (computerChoice === "paper") 
-        {
-            playerScore++;
-
-            playerWon = true;
-        }
-        if (computerChoice === "rock") 
-        {
-            computerScore++;
-            playerWon = false;
-        }
+        if (computerChoice === "paper") playerWon = true;
+        if (computerChoice === "rock") playerWon = false;
     }
 
-    console.log(`player won: ${playerWon}`);
-    dialogue.textContent = `You have chosen ${humanChoice} and the computer has chosen ${computerChoice}.`;
+    playerDialogue.textContent = "You have chosen: ";
+    computerDialogue.textContent = "The computer have chosen: ";
 
-    if (playerWon === undefined)
-    {
-        dialogue.textContent = ``;
-        displayWinner.textContent = "invalid option. Please try again.";
-        displayWinner.style.color = "blue";
-
-    }
-
-    else if (humanChoice === computerChoice)
-    {
-        displayWinner.textContent = "It's a tie!";
-        displayWinner.style.color = "darkgray";
-    }
-
-    else if (playerWon)
-    {
-        displayWinner.textContent = "You Won!";
-        displayWinner.style.color = "green";
-    }
-
-    else 
-    {
-        displayWinner.textContent = "Computer Won!";
-        displayWinner.style.color = "red";
-    }
-
-    playerScoreHTML.textContent = playerScore;
-    computerScoreHTML.textContent = computerScore; 
-
-}
-
-function checkWinner()
-{    
-    if (playerScore >= 3 || computerScore >= 3)
-    {
-        startButton.removeAttribute("disabled");
-        goBtn.setAttribute("disabled", "true");
-        if (playerScore >= 3) alert("You won the round!");
-        else alert("Computer has won the round!");
-    } 
+    //edit and add spans
+    const playerChosenSpan = document.createElement("span");
+    const computerChosenSpan = document.createElement("span");
+    playerChosenSpan.textContent = playerChoice;
+    computerChosenSpan.textContent = computerChoice;
+    playerChosenSpan.classList.add("chosen");
+    computerChosenSpan.classList.add("chosen");
     
+    playerDialogue.appendChild(playerChosenSpan);
+    computerDialogue.appendChild(computerChosenSpan);
+
+    handleWinner(playerChoice, computerChoice, playerWon);
+
 }
 
-function resetScores()
+function handleWinner(playerChoice, computerChoice, playerWon)
 {
-    playerScore = 0;
-    computerScore = 0;
-    playerScoreHTML.textContent = playerScore;
-    computerScoreHTML.textContent = computerScore;
+
+   if (playerWon === undefined)
+    {
+        announceWinner.textContent = "It's a draw."
+        announceWinner.style = "color:gray";
+
+        handleColors(playerChoice, computerChoice, "gray", "gray")
+
+    }
+
+    if (playerWon === true)
+    {
+        announceWinner.textContent = "You Won!";
+        announceWinner.style = "color:green";
+        playerScore++;
+        playerScoreSpan.textContent = playerScore; 
+
+        handleColors(playerChoice, computerChoice, "green", "red");
+
+    }
+
+    if (playerWon === false)
+    {
+        announceWinner.textContent = "You Lost!";
+        announceWinner.style = "color:red";
+        computerScore++;
+        computerScoreSpan.textContent = computerScore;
+
+        handleColors(playerChoice, computerChoice, "red", "green");
+    } 
+}
+
+function clearButtonColors()
+{
+    playerChoices.forEach((button) =>
+    {
+        button.style = "";
+    })
+
+    computerChoices.forEach((button) =>
+    {
+        button.style = "";
+    })
+}
+
+function handleColors(playerChoice, computerChoice, playerColor, computerColor)
+{
+        playerChoices.forEach((button) =>
+        {
+            if (button.id === playerChoice) button.style = `background-color: ${playerColor}`;
+        })
+
+        computerChoices.forEach((button) =>
+        {
+            if (button.id === computerChoice) button.style = `background-color: ${computerColor}`;
+        })
 }
